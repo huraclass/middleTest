@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.schoolspring.mapper.LoginMapper">
+
+    <insert id="signUp" parameterType="com.example.schoolspring.middleTest.domain.Member" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into middle_test_member(login_id,name,password)
+        values(#{loginId},#{name},#{password})
+    </insert>
+    <select id="login" parameterType="com.example.schoolspring.middleTest.domain.LoginForm" resultType="com.example.schoolspring.middleTest.domain.Member">
+        select * from middle_test_member where login_id = #{loginId} and password = #{password}
+    </select>
+</mapper>

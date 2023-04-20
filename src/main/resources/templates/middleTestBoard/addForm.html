@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <div>
+        <h1>게시글 등록 페이지</h1>
+    </div>
+    macAddr : <span th:text="${macAddr}"></span><br>
+    <form th:action method="post" enctype="multipart/form-data">
+        <ul>
+            <li>사고 위치 <input type="text" name="title"></li>
+            <li>상세 내역 <input type="text" name="content"></li>
+            <li>사진 등록 <input type="file" name="multipartFile"></li>
+        </ul>
+        <button type="submit">
+            등록
+        </button>
+    </form>
+</div>
+</body>
+</html>
