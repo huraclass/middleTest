@@ -17,8 +17,8 @@
             </thead>
             <tbody>
             <tr th:each="board : ${boards}">
-                <td><a href="item.html" th:href="@{/middleTestBoard/{boardId}(boardId=${board.boardNumber})}" th:text="${board.boardNumber}">등록번호</a></td>
-                <td th:text="${board.title}">제목</td>
+                <td><a href="item.html" th:href="@{/middleTestBoard/{boardId}(boardId=${board.getBoard_number})}" th:text="${board.getBoard_number}">등록번호</a></td>
+                <td> <a href="item.html" th:href="@{/middleTestBoard/{boardId}(boardId=${board.getBoard_number})}" th:text="${board.title}">제목</a></td>
                 <td th:text="${board.content}">10000</td>
             </tr>
             </tbody>

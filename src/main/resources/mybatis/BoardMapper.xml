@@ -3,28 +3,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.schoolspring.mapper.BoardMapper">
 
-    <insert id="saveBoard" parameterType="com.example.schoolspring.middleTest.domain.BoardDAO" useGeneratedKeys="true" keyColumn="board_number" keyProperty="boardNumber">
+    <insert id="saveBoard" parameterType="com.example.schoolspring.middleTest.domain.BoardDAO" useGeneratedKeys="true" keyColumn="board_number" keyProperty="board_number">
         insert into boarddao(title,content,server_save_file_name,real_file_name,member_id)
-        values (#{title},#{content},#{serverSaveFileName},#{realFileName},#{memberId})
+        values (#{title},#{content},#{server_save_file_name},#{real_file_name},#{member_id})
     </insert>
 
     <select id="getAllBoard" resultType="com.example.schoolspring.middleTest.domain.BoardDAO" parameterType="com.example.schoolspring.middleTest.domain.BoardDAO">
-        select * from boarddao;
+        select board_number,member_id,title,content,server_save_file_name,real_file_name from boarddao;
     </select>
 
     <select id="findByBoardId" resultType="com.example.schoolspring.middleTest.domain.BoardDAO" parameterType="long">
         select * from boarddao
-        where board_number = #{boardNumber}
+        where board_number = #{board_number}
     </select>
 
     <update id="updateBoard" parameterType="com.example.schoolspring.middleTest.domain.BoardDAO">
         update boarddao
-        set title = #{title}, content = #{content}, server_save_file_name = #{serverSaveFileName}, real_file_name = #{realFileName}
-        where board_number = #{boardNumber}
+        set title = #{title}, content = #{content}
+        where board_number = #{board_number}
     </update>
 
     <delete id="deleteByBoardId" parameterType="long">
         delete boarddao
+            from boarddao
         where board_number = #{boardNumber}
     </delete>
     <delete id="deleteAll">

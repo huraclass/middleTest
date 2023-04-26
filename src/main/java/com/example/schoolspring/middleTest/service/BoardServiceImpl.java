@@ -25,13 +25,13 @@ public class BoardServiceImpl implements BoardService{
         FileInfo uploadFile = fileStore.saveFile(input.getMultipartFile());
         //데이터 엑세스에 사용되는 DAO객체 생성
         BoardDAO board = BoardDAO.builder()
-                .memberId(memberId)
+                .member_id(memberId)
                 .title(input.getTitle())
                 .content(input.getContent())
-                .realFileName(uploadFile.getRealFileName())
-                .serverSaveFileName(uploadFile.getServerSaveFileName())
+                .real_file_name(uploadFile.getRealFileName())
+                .server_save_file_name(uploadFile.getServerSaveFileName())
                 .build();
-
+        log.info("board : {}",board);
         mapper.saveBoard(board);
 
         return board;
@@ -40,12 +40,13 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public BoardDAO saveTextBoard(InputForm input,Long memberId) throws IOException {
         BoardDAO board = BoardDAO.builder()
-                .memberId(memberId)
+                .member_id(memberId)
                 .title(input.getTitle())
                 .content(input.getContent())
                 .build();
+        log.info("board : {}", board);
         mapper.saveBoard(board);
-        return null;
+        return board;
     }
 
 
@@ -60,7 +61,14 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void updateBoard(BoardDAO boardDAO) {
+    public void updateBoard(InputForm input,Long memberId) {
+        BoardDAO boardDAO = BoardDAO.builder()
+                .board_number(input.getBoardNumber())
+                .title(input.getTitle())
+                .content(input.getContent())
+                .member_id(memberId)
+                .build();
+        log.info("board : {}", boardDAO);
         mapper.updateBoard(boardDAO);
     }
 

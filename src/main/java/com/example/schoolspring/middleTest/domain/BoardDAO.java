@@ -8,12 +8,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDAO {
-    private Long boardNumber;
-    private Long memberId;
+    private Long board_number;
+    private Long member_id;
     private String title;
     private String content;
-    private String serverSaveFileName;
-    private String realFileName;
+    private String server_save_file_name;
+    private String real_file_name;
 
     public BoardDAO transformInputDataToBoardDAO(FileInfo info){
         return null;

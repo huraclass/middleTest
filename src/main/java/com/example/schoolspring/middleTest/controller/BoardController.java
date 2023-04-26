@@ -55,6 +55,7 @@ public class BoardController {
     }
     @GetMapping("/addForm")
     public String addForm(Model model) {
+        log.info("addForm");
         model.addAttribute(new InputForm());
         model.addAttribute("macAddr", macAddr);
         return "middleTestBoard/addForm";
@@ -62,6 +63,8 @@ public class BoardController {
 
     @PostMapping("/addForm")
     public String addFormResult(@ModelAttribute InputForm inputForm, @CookieValue(name = "memberId",required = false) Long memberId) throws IOException {
+        log.info("form : {}", inputForm);
+        log.info("member : {}",memberId);
         if (inputForm.getMultipartFile().isEmpty()) {
             service.saveTextBoard(inputForm,memberId);
         }
@@ -73,9 +76,9 @@ public class BoardController {
 
     @GetMapping("/middleTestBoard/{boardId}")
     public String showDetailBoard(@PathVariable long boardId, Model model) {
-        BoardDAO boardById = service.getBoardById(boardId);
-        log.info("board, {}", boardById);
-        model.addAttribute("board",boardById);
+        BoardDAO findBoard = service.getBoardById(boardId);
+        log.info("board, {}", findBoard);
+        model.addAttribute("board",findBoard);
         model.addAttribute("macAddr", macAddr);
         return "middleTestBoard/ShowItem";
     }
@@ -83,32 +86,40 @@ public class BoardController {
     @GetMapping("/boards")
     public String showAllBoards(Model model) {
         List<BoardDAO> boards = service.getAllBoard();
+        boards.forEach(boardDAO -> log.info("board : {}",boardDAO));
         model.addAttribute("boards", boards);
         model.addAttribute("macAddr", macAddr);
         return "middleTestBoard/BoardList";
     }
 
     @GetMapping("/middleTestBoard/update/{boardNumber}")
-    @ResponseBody
     public String boardUpdate(@PathVariable Long boardNumber,Model model){
-        log.info("boardNumber : {}", boardNumber);
-        return "200 : se";
+        model.addAttribute("boardNumber", boardNumber);
+        return "middleTestBoard/editForm";
+    }
+
+    @PostMapping("/middleTestBoard/update/{boardNumber}")
+    public String boardPostUpdate(@ModelAttribute InputForm inputForm,@CookieValue(name = "memberId")Long memberId,@PathVariable Long boardNumber, Model model) {
+        BoardDAO findBoard = service.getBoardById(boardNumber);
+        if (findBoard.getMember_id() != memberId) {
+            return "redirect:/boards";
+        }
+        service.updateBoard(inputForm,memberId);
+        return "redirect:/boards";
     }
 
     @GetMapping("/middleTestBoard/remove/{boardNumber}")
-    @ResponseBody
     public String boardRemove(@PathVariable Long boardNumber){
-        log.info("boardNumber : {}", boardNumber);
-
-        return "200 : se";
+        service.deleteBoard(boardNumber);
+        return "redirect:/boards";
     }
     @GetMapping("/attach/{boardNumber}")
     public ResponseEntity<Resource> downloadAttach(@PathVariable Long boardNumber) throws MalformedURLException {
 
         log.info("rest 진입");
         BoardDAO item = service.getBoardById(boardNumber);
-        String storeFileName = item.getServerSaveFileName();
-        String uploadFileName = item.getRealFileName();
+        String storeFileName = item.getServer_save_file_name();
+        String uploadFileName = item.getReal_file_name();
 
         UrlResource resource = new UrlResource("file:" + getFullPath(storeFileName));
 

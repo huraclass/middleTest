@@ -17,7 +17,7 @@ public interface BoardService {
 
     BoardDAO getBoardById(long id);
 
-    void updateBoard(BoardDAO boardDAO);
+    void updateBoard(InputForm input,Long memberId);
 
     void deleteBoard(long boardId);
 

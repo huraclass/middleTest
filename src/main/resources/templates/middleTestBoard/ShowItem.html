@@ -8,8 +8,10 @@
 <h1>게시판 상세</h1>
 제목 : <span th:text="${board.title}">title</span><br>
 내용 : <span th:text="${board.content}">content</span><br>
-사진 : <img th:src="@{../../static/item/{fileName}(fileName=${board.serverSaveFileName})}" width="300" height="300"/>
-<a href="../index.html" th:href="@{/middleTestBoard/update/{boardId}(boardId=${board.boardNumber})}">수정</a>
-<a href="../index.html" th:href="@{/middleTestBoard/remove/{boardId}(boardId=${board.boardNumber})}">삭제</a>
+<th:block th:if="${board.server_save_file_name != null}">
+사진 : <img th:src="@{../../static/item/{fileName}(fileName=${board.server_save_file_name})}" width="300" height="300"/>
+</th:block>
+<a href="../index.html" th:href="@{/middleTestBoard/update/{boardId}(boardId=${board.getBoard_number})}">수정</a>
+<a href="../index.html" th:href="@{/middleTestBoard/remove/{boardId}(boardId=${board.getBoard_number})}">삭제</a>
 </body>
 </html>
