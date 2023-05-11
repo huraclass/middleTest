@@ -31,7 +31,6 @@ public class BoardServiceImpl implements BoardService{
                 .real_file_name(uploadFile.getRealFileName())
                 .server_save_file_name(uploadFile.getServerSaveFileName())
                 .build();
-        log.info("board : {}",board);
         mapper.saveBoard(board);
 
         return board;

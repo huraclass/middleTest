@@ -34,8 +34,6 @@ public class UserController {
 
     @RequestMapping(value = "board")
     public ModelAndView login(LoginVO loginDTO, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        log.info("진입");
-        log.info("login info :{}",loginDTO);
         //session 처리
         HttpSession session = request.getSession();
         ModelAndView mav = new ModelAndView();

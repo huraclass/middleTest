@@ -29,7 +29,7 @@ public class BoardController {
     private final BoardService service;
     private String macAddr;
 
-    @PostConstruct
+   /* @PostConstruct
     private void getMacAddr() {
         String result = "";
         InetAddress ip;
@@ -52,7 +52,7 @@ public class BoardController {
         }
 
         this.macAddr =  result;
-    }
+    }*/
     @GetMapping("/addForm")
     public String addForm(Model model) {
         log.info("addForm");
@@ -63,8 +63,6 @@ public class BoardController {
 
     @PostMapping("/addForm")
     public String addFormResult(@ModelAttribute InputForm inputForm, @CookieValue(name = "memberId",required = false) Long memberId) throws IOException {
-        log.info("form : {}", inputForm);
-        log.info("member : {}",memberId);
         if (inputForm.getMultipartFile().isEmpty()) {
             service.saveTextBoard(inputForm,memberId);
         }
@@ -86,7 +84,6 @@ public class BoardController {
     @GetMapping("/boards")
     public String showAllBoards(Model model) {
         List<BoardDAO> boards = service.getAllBoard();
-        boards.forEach(boardDAO -> log.info("board : {}",boardDAO));
         model.addAttribute("boards", boards);
         model.addAttribute("macAddr", macAddr);
         return "middleTestBoard/BoardList";

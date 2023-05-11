@@ -5,9 +5,9 @@
     <title>Title</title>
 </head>
 <body>
-<h1>게시판 상세</h1>
-제목 : <span th:text="${board.title}">title</span><br>
-내용 : <span th:text="${board.content}">content</span><br>
+<h1>수리 장소 상세</h1>
+장소 : <span th:text="${board.title}">title</span><br>
+내역 : <span th:text="${board.content}">content</span><br>
 <th:block th:if="${board.server_save_file_name != null}">
 사진 : <img th:src="@{../../static/item/{fileName}(fileName=${board.server_save_file_name})}" width="300" height="300"/>
 </th:block>

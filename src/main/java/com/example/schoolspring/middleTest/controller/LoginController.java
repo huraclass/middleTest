@@ -6,23 +6,59 @@ import com.example.schoolspring.middleTest.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
+    private String macAddr;
 
     private final LoginService loginService;
 
+    @PostConstruct
+    private void getMacAddr() {
+        String result = "";
+        InetAddress ip;
+
+        try {
+            ip = InetAddress.getLocalHost();
+
+            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+            byte[] mac = network.getHardwareAddress();
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mac.length; i++) {
+                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+            }
+            result = sb.toString();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (SocketException e){
+            e.printStackTrace();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+        this.macAddr =  result;
+    }
+
     @GetMapping("/middleindex")
-    public String middleIndex() {
+    public String middleIndex(Model model) {
+        model.addAttribute("macAddr", macAddr);
         return "login/middleIndex";
     }
     @GetMapping("/login")
@@ -33,11 +69,9 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@ModelAttribute LoginForm loginForm, HttpServletResponse response) {
         Member loginMember = loginService.login(loginForm);
-        log.info("member : {}",loginMember);
         Cookie cookie = new Cookie("memberId", String.valueOf(loginMember.getId()));
         cookie.setMaxAge(60);
         response.addCookie(cookie);
-        //response.addCookie(new Cookie("name", String.valueOf(loginMember.getName())));
         return "redirect:/boards";
     }
 
@@ -57,7 +91,6 @@ public class LoginController {
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
-
         return "index";
     }
 }

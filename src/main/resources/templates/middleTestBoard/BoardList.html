@@ -6,20 +6,18 @@
 </head>
 <body>
 <h2>수리 소요 목록</h2>
-<button th:onclick="|location.href='@{/addForm}'|">View page</button>
+<button th:onclick="|location.href='@{/addForm}'|">수리 소요 추가</button>
 <table class="table">
             <thead>
             <tr>
-                <th th:text="hello">ID</th>
-                <th th:text="hello">상품명</th>
-                <th th:text="hello">가격</th>
+                <th th:text="번호">ID</th>
+                <th th:text="장소">상품명</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="board : ${boards}">
                 <td><a href="item.html" th:href="@{/middleTestBoard/{boardId}(boardId=${board.getBoard_number})}" th:text="${board.getBoard_number}">등록번호</a></td>
                 <td> <a href="item.html" th:href="@{/middleTestBoard/{boardId}(boardId=${board.getBoard_number})}" th:text="${board.title}">제목</a></td>
-                <td th:text="${board.content}">10000</td>
             </tr>
             </tbody>
         </table>
